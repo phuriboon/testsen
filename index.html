@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sarabun">
+    <style>
+      body {
+          font-family: "Sarabun", sans-serif;
+          }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+    <h3 align = 'center'>ลงทะเบียนเพื่อขอวันนัดให้ถ้อยคำ</h3>
+      <div class="row">
+        <div class="input-field col s6">
+          <i class="material-icons prefix">face</i>
+          <input id="Juvenile" type="text" class="validate">
+          <label for="Juvenile">ชื่อ-นามสกุล ผู้ต้องหา</label>
+        </div>
+        <div class="input-field col s6">
+          <i class="material-icons prefix">people</i>
+          <input id="Parents" type="text" class="validate">
+          <label for="Parents">ชื่อ-นามสกุล ผู้ปกครอง</label>
+        </div>
+         <div class="input-field col s6">
+          <i class="material-icons prefix">phone</i>
+          <input id="Phone" type="tel" class="validate">
+          <label for="Phone">เบอร์โทรศัพท์</label>
+        </div>
+      </div>
+       <button class="btn waves-effect waves-light" type="Submit" onclick="AddRow()">บันทึก
+             <i class="material-icons right">send</i>
+       </button>
+      </div>
+      </div>
+      <img id="pictureUrl">
+      <p id="userId" type="text"><b>userId:</b> </p>
+      <p id="displayName" type="text"><b>displayName:</b> </p>
+      <p id="statusMessage" type="text"><b>statusMessage:</b> </p>
+      </body>
+<script src="https://static.line-scdn.net/liff/edge/versions/2.9.0/sdk.js"></script>
+ <script>
+   /// Config Your LIFF ID Here
+    const liffId = "1655908659-zY5YwjEE";
+    /// Config Your LIFF ID Here
+    liff.ready
+      .then(() => {
+        if (liff.isLoggedIn()) {
+          return liff.getProfile();
+        } else {
+          liff.login({
+            redirectUri: "https://script.google.com/macros/s/AKfycby02LpmS3fsggrynl1FmoViNhloAdYt73ErFyj0exLQas6SOOKhSUc1stgoUCvqT77kNA/exec",
+          });
+        }
+      })
+      .then((profile) => {
+        document.getElementById("pictureUrl").src = Profile.pictureUrl;
+        document.getElementById("userId").value(liff.getOS());
+        document.getElementById("displayName").value(Profile.displayName)
+        document.getElementById("statusMessage").value(Profile.statusMessage)
+        //const userId = profile.userId
+        //const name = profile.displayName
+        //const picture = profile.pictureUrl
+        //const status = profile.statusMessage
+       });
+    liff.init(
+      {
+        liffId: liffId,
+      },
+      () => {},
+      (err) => {
+        window.alert(err);
+      }
+    );
+    
+    function AddRow() {
+       var data ={}
+           data.userProfile = userId;
+           data.displayName = name;
+           data.picture = picture
+           data.Juvenile = document.getElementById("Juvenile").value;
+           data.Parents = document.getElementById("Parents").value;
+           data.Phone = document.getElementById("Phone").value;
+       google.script.run.AddRecord(data);
+       document.getElementById("Juvenile").value="";
+       document.getElementById("Parents").value="";
+       document.getElementById("Phone").value="";
+       // sweetAlert({text:"บันทึกข้อมูล เรียบร้อยแล้ว!!", icon:"success",timer:"5000"})
+       swal({
+            title: "ยินดีด้วย",
+            text: "คุณลงทะเบียนขอวันนัดเรียบร้อยแล้ว",
+            icon: "success",
+            timer:"3000",
+          });
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</html>
